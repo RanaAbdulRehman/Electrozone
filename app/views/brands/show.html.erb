@@ -9,6 +9,7 @@
   <strong>Slog:</strong>
   <%= @brand.slog %>
 </p>
-
-<%= link_to 'Edit', edit_brand_path(@brand) %> |
+<% if can? :update, Brand%>
+  <%= link_to 'Edit', edit_brand_path(@brand) %>
+<% end %>
 <%= link_to 'Back', brands_path %>

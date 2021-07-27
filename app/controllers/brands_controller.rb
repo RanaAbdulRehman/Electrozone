@@ -1,5 +1,6 @@
 class BrandsController < ApplicationController
   before_action :set_brand, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
 
   # GET /brands or /brands.json
   def index

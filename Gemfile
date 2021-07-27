@@ -32,6 +32,7 @@ gem 'devise'
 gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
 gem "image_processing", ">= 1.2"
+gem 'cancancan'
 
 
 group :development, :test do
