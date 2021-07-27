@@ -10,6 +10,8 @@
       </ul>
     </div>
   <% end %>
+  <%= select_tag :brand_id, options_for_select(Brand.all.map { |obj| [obj['title'], obj['id']] }) %>
+
 
   <div class="field">
     <%= form.label :title %>
@@ -35,6 +37,8 @@
     <%= form.label :image %>
     <%= form.file_field :image %>
   </div>
+
+
 
   <div class="actions">
     <%= form.submit %>

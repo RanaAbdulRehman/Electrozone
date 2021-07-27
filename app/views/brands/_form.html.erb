@@ -11,12 +11,14 @@
     </div>
   <% end %>
 
-  
+
 
   <div class="field">
     <%= form.label :title %>
     <%= form.text_field :title %>
   </div>
+
+  <%= select_tag :category_id, options_for_select(Category.all.map { |obj| [obj['title'], obj['id']] }) %>
 
 
 

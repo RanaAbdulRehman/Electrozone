@@ -22,7 +22,7 @@ class BrandsController < ApplicationController
   # POST /brands or /brands.json
   def create
     @brand = Brand.new(brand_params)
-
+    @brand.category_id = params[:category_id]
     respond_to do |format|
       if @brand.save
         format.html { redirect_to @brand, notice: "Brand was successfully created." }
@@ -64,6 +64,7 @@ class BrandsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def brand_params
-      params.require(:brand).permit(:title, :slog)
+      params[:brand][:slog] = params[:brand][:title]
+      params.require(:brand).permit(:title, :slog,:category_id)
     end
 end
