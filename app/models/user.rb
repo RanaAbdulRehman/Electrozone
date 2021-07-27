@@ -23,4 +23,8 @@ class User < ApplicationRecord
       end
     end
   end
+  
+  def admin?
+    self.kind == "admin" ? true : false
+  end
 end
