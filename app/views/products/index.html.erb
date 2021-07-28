@@ -1,5 +1,9 @@
 <p id="notice"><%= notice %></p>
 
+<div style="float:right">
+   <%= link_to "Show Cart", carts_path%>
+</div>
+
 <h1>Products</h1>
 
 <table>
@@ -35,6 +39,15 @@
         <% if can? :delete, product%>
           <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end%>
+        <% if !current_user.admin?%>
+          <td>
+            <%= form_for @order_item do |f|%>
+              <%= f.hidden_field :product_id, :value => product.id%>
+              <%= f.number_field :quantity, :value => 1, min: 1, max: product.quantity%>
+              <%= f.submit "Add To Cart"%>
+            <% end%>
+          </td>
+        <%end%>
       </tr>
     <% end %>
   </tbody>
