@@ -1,0 +1,28 @@
+<%= form_with(model: brand) do |form| %>
+  <% if brand.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(brand.errors.count, "error") %> prohibited this brand from being saved:</h2>
+
+      <ul>
+        <% brand.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <%= select_tag :category_id, options_for_select(Category.all.map { |obj| [obj['title'], obj['id']] }) %>
+
+
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
