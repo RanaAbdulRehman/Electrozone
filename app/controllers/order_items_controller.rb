@@ -3,6 +3,11 @@ class OrderItemsController < ApplicationController
     
     def create
         @order = current_order
+        if @order.user_id.nil?
+            @order.user_id = current_user.id
+        end
+        print"Heloooooooooooooooo"
+        p @order
         flag = true
         @order.order_items.each do |item|
             if item.product_id == order_params[:product_id].to_i
@@ -10,8 +15,8 @@ class OrderItemsController < ApplicationController
                 @updated_details[:quantity] = item.quantity + order_params[:quantity].to_i
                 @item_to_be_updated = @order.order_items.find(item.id)
                 @item_to_be_updated.update(@updated_details)
-                redirect_to products_path
                 flag = false
+                redirect_to products_path
             end
         end
         if flag == true
