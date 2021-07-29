@@ -16,14 +16,21 @@
       <tr>
         <td><%= brand.title %></td>
         <td><%= brand.slog %></td>
-        <td><%= link_to 'Show', brand %></td>
-        <td><%= link_to 'Edit', edit_brand_path(brand) %></td>
-        <td><%= link_to 'Destroy', brand, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if can? :read, brand%>
+          <td><%= link_to 'Show', brand %></td>
+        <% end%>
+        <% if can? :edit, brand%>
+          <td><%= link_to 'Edit', edit_brand_path(brand) %></td>
+        <% end%>
+        <% if can? :delete, brand%>
+          <td><%= link_to 'Destroy', brand, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end%>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Brand', new_brand_path %>
+<% if can? :create, Brand%>
+  <%= link_to 'New Brand', new_brand_path %>
+<% end%>
