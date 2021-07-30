@@ -33,6 +33,9 @@ gem 'omniauth-facebook'
 gem 'omniauth-rails_csrf_protection'
 gem "image_processing", ">= 1.2"
 gem 'cancancan'
+gem 'elasticsearch-model', github: 'elastic/elasticsearch-rails', branch: 'master'
+gem 'elasticsearch-rails', github: 'elastic/elasticsearch-rails', branch: 'master'
+
 
 
 group :development, :test do
