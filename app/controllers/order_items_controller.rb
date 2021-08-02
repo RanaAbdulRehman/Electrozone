@@ -1,29 +1,16 @@
 class OrderItemsController < ApplicationController
-
+    after_action :filter_order_items ,only: [:create]
     
     def create
         @order = current_order
         if @order.user_id.nil?
             @order.user_id = current_user.id
         end
-        print"Heloooooooooooooooo"
-        p @order
-        flag = true
-        @order.order_items.each do |item|
-            if item.product_id == order_params[:product_id].to_i
-                @updated_details= order_params
-                @updated_details[:quantity] = item.quantity + order_params[:quantity].to_i
-                @item_to_be_updated = @order.order_items.find(item.id)
-                @item_to_be_updated.update(@updated_details)
-                flag = false
-                redirect_to products_path
-            end
-        end
-        if flag == true
-            @order_item = @order.order_items.new(order_params)
-            @order.save
-            session[:order_id] = @order.id
-        end
+        @order_item = @order.order_items.new(order_params)
+        @order.save
+        session[:order_id] = @order.id
+        
+        redirect_to products_path
     end
 
     def update
@@ -46,4 +33,12 @@ class OrderItemsController < ApplicationController
         params.require(:order_item).permit(:product_id, :quantity)
     end
 
+    def filter_order_items
+        order_items = @order.order_items.select { |item|  item.product_id == order_params[:product_id].to_i  }
+        if order_items.size>1
+            order_items[0].quantity = order_items[0].quantity + order_items[1].quantity
+            current_order.order_items.destroy(order_items[1].id)
+            current_order.order_items.update(order_items[0].as_json)
+        end
+    end
 end
