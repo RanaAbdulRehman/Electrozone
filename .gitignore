@@ -34,5 +34,4 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-Gemfile.lock
 /app/assets/images
