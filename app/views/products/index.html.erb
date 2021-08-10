@@ -1,5 +1,26 @@
 <p id="notice"><%= notice %></p>
 
+<div style="float:right">
+   <%= link_to "Show Cart", carts_path%>
+</div>
+
+<div>
+  <%=form_tag url_for('/search/index'), method: "get" do%>
+  <div>
+    <%= label_tag :min_price %>
+    <%= number_field_tag :min_price, :value => 0, min: 0, max: 1000000000, step: 0.5%>
+  </div>
+  <div>
+    <%= label_tag :max_price %>
+    <%= number_field_tag :max_price, :value => 0, min: 0, max: 10000000000, step: 0.5%>
+  </div>
+  <div>
+    <%= label_tag :title %>
+    <%= text_field_tag :title%>
+    <%= submit_tag :search %>
+  </div>            
+  <%end%>
+</div>
 <h1>Products</h1>
 
 <table>
@@ -7,9 +28,12 @@
     <tr>
       <th>Title</th>
       <th>Price</th>
-      <th>Description</th>
-      <th>Quantity</th>
-      <th colspan="3"></th>
+      <%if current_user.admin?%>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th colspan="3"></th>
+      <%end%>
+      <th>Image</th>
     </tr>
   </thead>
 
@@ -18,9 +42,12 @@
       <tr>
         <td><%= product.title %></td>
         <td><%= product.price %></td>
+        <%if current_user.admin?%>
         <td><%= product.description %></td>
         <td><%= product.quantity %></td>
-        <% if can? :read, product%>
+        <% end%>
+        <%# <td><%= #image_tag product.image.representation(resize: '100x100') %>
+        <% if can? :read, product%> %>
           <td><%= link_to 'Show', product %></td>
         <% end%>
         <% if can? :edit, product%>
@@ -29,6 +56,15 @@
         <% if can? :delete, product%>
           <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end%>
+        <% if !current_user.admin?%>
+          <td>
+            <%= form_for @order_item do |f|%>
+              <%= f.hidden_field :product_id, :value => product.id%>
+              <%= f.number_field :quantity, :value => 1, min: 1, max: product.quantity%>
+              <%= f.submit "Add To Cart"%>
+            <% end%>
+          </td>
+        <%end%>
       </tr>
     <% end %>
   </tbody>
